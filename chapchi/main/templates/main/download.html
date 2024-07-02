@@ -1,0 +1,34 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Find Your File{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Find Your File</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="code">Enter your 5-character code:</label>
+                            <input type="text" class="form-control" id="code" name="code" required maxlength="5" pattern="^X\w{4}$">
+                            <small class="form-text text-muted">The code should start with 'X' followed by 4 characters.</small>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Find File</button>
+                    </form>
+                    {% if error_message %}
+                        <div class="alert alert-danger mt-3" role="alert">
+                            {{ error_message }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

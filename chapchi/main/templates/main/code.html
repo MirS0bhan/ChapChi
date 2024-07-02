@@ -1,0 +1,46 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Shortened URL{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Your Shortened URL</h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-success" role="alert">
+                    Your file has been successfully uploaded and shortened!
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" value="{{ request.scheme }}://{{ request.get_host }}/{{ short_code }}" id="shortened-url" readonly>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard()">Copy</button>
+                    </div>
+                </div>
+                <p class="mb-0">Your 5-character identifier: <strong>{{ short_code }}</strong></p>
+                <hr>
+                <div class="text-center">
+                    <a href="{{ short_code }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-download mr-2"></i>Download File
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function copyToClipboard() {
+    var copyText = document.getElementById("shortened-url");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    alert("Copied the URL: " + copyText.value);
+}
+</script>
+{% endblock %}

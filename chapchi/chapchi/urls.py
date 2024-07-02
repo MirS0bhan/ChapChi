@@ -22,6 +22,8 @@ from main import views
 
 urlpatterns = [
     path('', views.home, name="home"),
-
+    path('upload/', views.FileUploadView.as_view(), name='file_upload'),
+    path('<str:code>/', views.download, name='download_file'),
+    
     path("admin/", admin.site.urls),
 ]
