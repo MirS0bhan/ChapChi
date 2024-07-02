@@ -9,6 +9,7 @@ from django.shortcuts import render
 from django.conf import settings
 from django.http import FileResponse, Http404
 
+from .utils import ran_char_num
 from .tasks import save_uploaded_file
 
 def home(request):
@@ -21,12 +22,11 @@ class FileUploadView(View):
             return JsonResponse({'error': 'No file uploaded'}, status=400)
 
         uploaded_file = request.FILES['file']
+        code = ran_char_num()
         
-        file_content = await uploaded_file.read()
-        task = save_uploaded_file.delay(file_content, uploaded_file.name)
+        await save_uploaded_file(uploaded_file, code)
         
         # Wait for the task to complete and get the result
-        code = await task.get()
         return render(request, 'main/code.html', {'short_code': code})
 
     
