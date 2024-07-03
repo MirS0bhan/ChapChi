@@ -38,7 +38,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "main"
+    "main",
+    'django_crontab',
+]
+CRONJOBS = [
+    ('0 * * * *', 'main.cron.delelet_old_files_hourly'),
 ]
 
 STATIC_URL = '/static/'
