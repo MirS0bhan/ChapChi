@@ -1,98 +1,174 @@
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+/* your_app/static/css/style.css */
 
 body {
-    font-family: 'Cairo', sans-serif;
-    background-color: #f0f2f5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    direction: rtl;
+    background-color: #121212;
+    color: #e0e0e0;
 }
 
-.container {
-    width: 100%;
-    max-width: 400px;
-    padding: 20px;
+.navbar {
+    background-color: #1e1e1e !important;
 }
 
-.upload-box {
-    background-color: #ffffff;
-    border-radius: 8px;
-    padding: 30px;
+.navbar-brand, .nav-link {
+    color: #ffffff !important;
+}
+
+.card {
+    background-color: #1e1e1e;
+    border: none;
+    border-radius: 15px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
+.btn-primary {
+    background-color: #3700B3;
+    border-color: #3700B3;
+}
+
+.btn-primary:hover {
+    background-color: #6200EE;
+    border-color: #6200EE;
+}
+
+footer {
+    background-color: #1e1e1e !important;
+    color: #a0a0a0;
+}
+
+/* Existing styles... */
+
+.upload-card, .preview-card {
+    height: 100%;
+}
+
+.upload-box {
+    border: 2px dashed #ccc;
+    border-radius: 5px;
+    padding: 30px;
     text-align: center;
-    margin-bottom: 20px;
-    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.upload-box:hover {
+    background-color: #f8f9fa;
+}
+
+.upload-box i {
+    font-size: 48px;
+    color: #6c757d;
+    margin-bottom: 10px;
+}
+
+.upload-box p {
+    margin-bottom: 0;
+    color: #6c757d;
 }
 
 .file-input {
-    position: relative;
-    margin-bottom: 20px;
+    display: none;
 }
 
-.file {
-    position: absolute;
-    left: 0;
-    top: 0;
-    opacity: 0;
-    width: 100%;
+.highlight {
+    background-color: #e9ecef;
+    border-color: #6c757d;
+}
+
+/* New and updated styles for preview box */
+/* Dark theme styles */
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+.upload-card, .preview-card {
     height: 100%;
-    cursor: pointer;
-}
-
-.file-input label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #f0f0f0;
-    border: 2px dashed #ccc;
-    border-radius: 4px;
-    padding: 15px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.file-input label:hover {
-    background-color: #e8e8e8;
-    border-color: #aaa;
-}
-
-.file-input svg {
-    margin-left: 10px;
-    fill: #666;
-}
-
-.file-name {
-    margin-top: 10px;
-    display: block;
-    text-align: center;
-    font-size: 14px;
-    color: #666;
-}
-
-.upload-btn {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    background-color: #4CAF50;
-    color: white;
+    background-color: #1e1e1e;
     border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
-.upload-btn:hover {
-    background-color: #45a049;
+.card-title {
+    color: #ffffff;
+}
+
+.upload-box {
+    border: 2px dashed #444;
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    transition: background-color 0.3s ease;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.upload-box:hover {
+    background-color: #333333;
+}
+
+.upload-box i {
+    color: #bb86fc;
+}
+
+.upload-box p {
+    color: #e0e0e0;
+}
+
+.highlight {
+    background-color: #333333;
+    border-color: #bb86fc;
+}
+
+.preview-card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+#preview-container {
+    background-color: #2a2a2a;
+}
+
+#file-preview {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.file-icon {
+    background-color: #333333;
+}
+
+#file-info {
+    background-color: #2a2a2a;
+}
+
+.file-info-header {
+    border-bottom: 1px solid #444;
+}
+
+#no-file-selected {
+    color: #9e9e9e;
+}
+
+.btn-primary {
+    background-color: #bb86fc;
+    border-color: #bb86fc;
+    color: #000000;
+}
+
+.btn-primary:hover {
+    background-color: #a366fc;
+    border-color: #a366fc;
+    color: #000000;
+}
+
+/* Existing responsive styles */
+@media (max-width: 767px) {
+    .preview-card {
+        margin-top: 20px;
+        position: static;
+    }
 }
