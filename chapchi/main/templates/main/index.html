@@ -11,7 +11,7 @@
         <div class="card upload-card">
             <div class="card-body">
                 <h2 class="card-title text-center mb-4">آپلود فایل</h2>
-                <form method="post" enctype="multipart/form-data" id="upload-form">
+                <form action="/upload/" method="post" enctype="multipart/form-data" id="upload-form">
                     {% csrf_token %}
                     <div class="upload-box" id="upload-box">
                         <i class="fas fa-cloud-upload-alt"></i>
@@ -25,7 +25,6 @@
     </div>
     <div class="col-md-4">
             {% include 'main/preview.html' %}
-        </div>
     </div>
 </div>
 {% endblock %}

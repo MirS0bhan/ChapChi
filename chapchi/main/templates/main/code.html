@@ -23,10 +23,13 @@
                 <p class="mb-0">Your 5-character identifier: <strong>{{ short_code }}</strong></p>
                 <hr>
                 <div class="text-center">
-                    <a href="/{{ short_code }}" class="btn btn-primary btn-lg">
-                        <i class="fas fa-download mr-2"></i>Download File
-                    </a>
+                    <form action="" method="post">
+                        <input class="btn btn-primary btn-lg" type="submit" value="Download File">
+                    </form>
                 </div>
+            </div>
+            <div class="col-md-4">
+                {% include 'main/preview.html' %}
             </div>
         </div>
     </div>

@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.views import View
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.conf import settings
 from django.http import FileResponse, Http404
 
@@ -27,24 +27,32 @@ class FileUploadView(View):
         await save_uploaded_file(uploaded_file, code)
         
         # Wait for the task to complete and get the result
-        return render(request, 'main/code.html', {'short_code': code})
+        return redirect(f'/{code}')
 
+@method_decorator(csrf_exempt, name='dispatch')
+class Download(View):
+    def get(self, request, code):
+        return render(request, 'main/code.html', {'short_code': code})
     
-def download(request, code):
-    if len(code) == 5:
-        # Directory where uploaded files are stored
-        upload_dir = os.path.join(settings.MEDIA_ROOT, 'uploads')
-        
-        # Search for files starting with the given code
-        code = 'X' + code
-        for filename in os.listdir(upload_dir):
-            if filename.startswith(code):
-                file_path = os.path.join(upload_dir, filename)
-                return FileResponse(open(file_path, 'rb'), as_attachment=True, filename=filename)
-        
-        # If no file is found
-        return render(request, 'main/download.html', {'error_message': 'No file found with the given code.'})
-    else:
-        return render(request, 'main/download.html', {'error_message': 'Invalid code format.'})
-    
-    return render(request, 'main/download.html')
+    def post(self, request, code):
+        """
+        Download the file with the given code.
+        """
+
+        if len(code) == 5:
+            # Directory where uploaded files are stored
+            upload_dir = os.path.join(settings.MEDIA_ROOT, 'uploads')
+
+            # Search for files starting with the given code
+            Xcode = 'X' + code
+            for filename in os.listdir(upload_dir):
+                if filename.startswith(Xcode):
+                    file_path = os.path.join(upload_dir, filename)    
+                    return FileResponse(open(file_path, 'rb'), as_attachment=True, filename=filename)
+
+            # If no file is found
+            return render(request, 'main/download.html', {'error_message': 'No file found with the given code.'})
+        else:
+            return render(request, 'main/download.html', {'error_message': 'Invalid code format.'})
+
+        return render(request, 'main/download.html')
