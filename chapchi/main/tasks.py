@@ -24,7 +24,7 @@ def delete_old_files():
     Delete files that were created more than 5 hours ago.
     """
     now = datetime.now()
-    file_tree = cache.get(settings.FILE_TREE_CACHE_KEY)
+    file_tree = tree_file()
     f = filter(lambda file_path: now - datetime.fromtimestamp(os.path.getctime(file_path)) > timedelta(hours=5), file_tree.values())
     map(lambda file_path:os.remove(file_path), f)
                 
@@ -32,3 +32,9 @@ def cache_file_tree(directory, cache_key='file_tree', timeout=3600):
     file_tree = generate_file_tree(directory)
     cache.set(cache_key, file_tree, timeout)
     return file_tree
+
+def tree_file():
+    r = cache.get(settings.FILE_TREE_CACHE_KEY)
+    if r == None: 
+        cache_file_tree(settings.UPLOAD_DIR, settings.FILE_TREE_CACHE_KEY)
+    return r

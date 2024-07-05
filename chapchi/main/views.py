@@ -11,7 +11,7 @@ from django.http import FileResponse, Http404
 from django.core.cache import cache
 
 from .utils import ran_char_num
-from .tasks import save_uploaded_file, cache_file_tree
+from .tasks import save_uploaded_file, cache_file_tree, tree_file
 
 
 def home(request):
@@ -40,7 +40,7 @@ class Download(View):
     def post(self, request, code):
         """ Download the file with the given code."""
         
-        file_tree = cache.get(settings.FILE_TREE_CACHE_KEY)
+        file_tree = tree_file()
         file_name = file_tree.get(code, None)
         file_path = os.path.join(settings.UPLOAD_DIR, file_name)
         
