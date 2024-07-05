@@ -8,9 +8,11 @@ from django.views import View
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.http import FileResponse, Http404
+from django.core.cache import cache
 
 from .utils import ran_char_num
-from .tasks import save_uploaded_file
+from .tasks import save_uploaded_file, cache_file_tree
+
 
 def home(request):
     return render(request, 'main/index.html')
@@ -27,6 +29,7 @@ class FileUploadView(View):
         await save_uploaded_file(uploaded_file, code)
         
         # Wait for the task to complete and get the result
+        cache_file_tree(settings.UPLOAD_DIR, settings.FILE_TREE_CACHE_KEY)
         return redirect(f'/{code}')
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -35,24 +38,15 @@ class Download(View):
         return render(request, 'main/code.html', {'short_code': code})
     
     def post(self, request, code):
-        """
-        Download the file with the given code.
-        """
-
-        if len(code) == 5:
-            # Directory where uploaded files are stored
-            upload_dir = os.path.join(settings.MEDIA_ROOT, 'uploads')
-
-            # Search for files starting with the given code
-            Xcode = 'X' + code
-            for filename in os.listdir(upload_dir):
-                if filename.startswith(Xcode):
-                    file_path = os.path.join(upload_dir, filename)    
-                    return FileResponse(open(file_path, 'rb'), as_attachment=True, filename=filename)
+        """ Download the file with the given code."""
+        
+        file_tree = cache.get(settings.FILE_TREE_CACHE_KEY)
+        file_name = file_tree.get(code, None)
+        file_path = os.path.join(settings.UPLOAD_DIR, file_name)
+        
+        if file_path:
+            return FileResponse(open(file_path, 'rb'), as_attachment=True, filename=file_name)
 
             # If no file is found
-            return render(request, 'main/download.html', {'error_message': 'No file found with the given code.'})
-        else:
-            return render(request, 'main/download.html', {'error_message': 'Invalid code format.'})
+        return render(request, 'main/download.html', {'error_message': 'No file found with the given code.'})
 
-        return render(request, 'main/download.html')

@@ -51,6 +51,9 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+UPLOAD_DIR = os.path.join(MEDIA_ROOT, 'uploads')
+FILE_TREE_CACHE_KEY = 'file_tree'
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
