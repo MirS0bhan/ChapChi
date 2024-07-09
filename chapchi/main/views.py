@@ -1,4 +1,5 @@
 import os
+import logging 
 
 from django.conf import settings
 from django.http import JsonResponse
@@ -7,12 +8,12 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.shortcuts import render, redirect
 from django.conf import settings
-from django.http import FileResponse, Http404
-from django.core.cache import cache
+from django.http import FileResponse
 
 from .utils import ran_char_num
-from .tasks import save_uploaded_file, cache_file_tree, tree_file
+from .tasks import save_uploaded_file ,cache_file_tree, tree_file
 
+logger = logging.getLogger(__name__)
 
 def home(request):
     return render(request, 'main/index.html')
@@ -26,10 +27,11 @@ class FileUploadView(View):
         uploaded_file = request.FILES['file']
         code = ran_char_num()
         
-        await save_uploaded_file(uploaded_file, code)
+        save_uploaded_file(uploaded_file, code)
+        logger.info(f"Saving thread with code: {code} has started")
+        cache_file_tree(settings.UPLOAD_DIR)
+        logger.info(f"cache refresh thread started")
         
-        # Wait for the task to complete and get the result
-        cache_file_tree(settings.UPLOAD_DIR, settings.FILE_TREE_CACHE_KEY)
         return redirect(f'/{code}')
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -42,11 +44,12 @@ class Download(View):
         
         file_tree = tree_file()
         file_name = file_tree.get(code, None)
-        file_path = os.path.join(settings.UPLOAD_DIR, file_name)
         
-        if file_path:
+        if file_name:
+            file_path = os.path.join(settings.UPLOAD_DIR, file_name)
+            logger.info(f"{code} has sended")
             return FileResponse(open(file_path, 'rb'), as_attachment=True, filename=file_name)
 
-            # If no file is found
+        # If no file is found
         return render(request, 'main/download.html', {'error_message': 'No file found with the given code.'})
 
