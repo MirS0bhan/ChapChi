@@ -64,7 +64,7 @@ LOGGING = {
         'console': {
             'level': 'INFO',
             'class': 'logging.StreamHandler',
-            'formatter': 'simple',
+            'formatter': 'verbose',
         },
     },
     'loggers': {
@@ -73,7 +73,7 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
-        'myapp': {  # replace with your app name
+        'main': {  # replace with your app name
             'handlers': ['file', 'console'],
             'level': 'DEBUG',
             'propagate': True,

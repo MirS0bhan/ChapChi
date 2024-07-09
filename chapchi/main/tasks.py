@@ -14,15 +14,14 @@ logger = logging.getLogger(__name__)
 UPLOAD_DIR = settings.UPLOAD_DIR
 
 @run_in_thread
-async def save_uploaded_file(uploaded_file, code):
+async def save_uploaded_file(file_content, file_name, code):
     os.makedirs(UPLOAD_DIR, exist_ok=True)
     
-    file_name = f"X{code+uploaded_file.name}"
+    file_name = f"X{code+file_name}"
     file_path = os.path.join(UPLOAD_DIR, file_name)
-    logger.info(f"Saving uploaded file {uploaded_file.filename} with {code}")
+    logger.info(f"Saving uploaded file {file_name} with {code}")
     async with aiofiles.open(file_path, 'wb') as destination:
-        for chunk in uploaded_file.chunks():
-            await destination.write(chunk)
+        await destination.write(file_content)
     logger.info(f"{code} has saved")
 
 @run_in_thread

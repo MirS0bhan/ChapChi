@@ -16,6 +16,7 @@ from .tasks import save_uploaded_file ,cache_file_tree, tree_file
 logger = logging.getLogger(__name__)
 
 def home(request):
+    logger.info(f"hello")
     return render(request, 'main/index.html')
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -25,9 +26,11 @@ class FileUploadView(View):
             return JsonResponse({'error': 'No file uploaded'}, status=400)
 
         uploaded_file = request.FILES['file']
+        file_content = uploaded_file.read()
+        file_name = uploaded_file.name
         code = ran_char_num()
         
-        save_uploaded_file(uploaded_file, code)
+        save_uploaded_file(file_content,file_name, code)
         logger.info(f"Saving thread with code: {code} has started")
         cache_file_tree(settings.UPLOAD_DIR)
         logger.info(f"cache refresh thread started")
