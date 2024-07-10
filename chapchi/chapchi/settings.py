@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "main",
-    'django_crontab',
 ]
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -80,9 +80,6 @@ LOGGING = {
         },
     },
 }
-CRONJOBS = [
-    ('0 * * * *', 'main.cron.delelet_old_files_hourly'),
-]
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
